@@ -18,11 +18,33 @@ I'm a data analyst and engineer based in Eugene, OR. My journey into data starte
 
 ---
 
+## 🗂️ Repository Structure
+
+```
+Albert-Lade/Portfolio/
+├── Commissions_Report/
+│   ├── Comissions_Report.ipynb
+│   └── README.md
+├── ETL_Pipeline_Fuzzymatching/
+│   ├── ETL_Pipeline_Fuzzymatching.ipynb
+│   └── README.md
+├── Heart_Disease_Predictor/
+│   ├── Heart_Disease.ipynb
+│   └── README.md
+├── PowerBI/
+│   ├── 10-Solution-Sales Analysis.pbix
+│   └── README.md
+└── SQL/
+    └── README.md
+```
+
+---
+
 ## 🗂️ Projects
 
 | # | Project | Domain | Core Tools | Key Result |
 |---|---------|--------|-----------|------------|
-| 1 | [ETL Pipeline with Fuzzy Matching](#1--etl-pipeline-with-fuzzy-matching) | Data Engineering | Python, RapidFuzz, Pandas, SQL | ~80% duplicate reduction |
+| 1 | [ETL Pipeline with Fuzzy Matching](#1--etl-pipeline-with-fuzzy-matching) | Data Engineering | Python, RapidFuzz, Pandas | ~80% duplicate reduction |
 | 2 | [Power BI Sales Performance Dashboard](#2--power-bi-sales-performance-dashboard) | Business Intelligence | Power BI, DAX, SQL Server | Replaced 5+ manual weekly reports |
 | 3 | [Heart Disease Prediction — Random Forest](#3--heart-disease-prediction--random-forest) | Machine Learning | Scikit-learn, Pandas, NumPy | Best model: 200 trees, min_samples_split=20 |
 | 4 | [Commission Reporting Automation](#4--commission-reporting-automation) | Financial Automation | Python, Pandas, xlsxwriter | 8 hrs → 30 min per pay cycle |
@@ -32,29 +54,29 @@ I'm a data analyst and engineer based in Eugene, OR. My journey into data starte
 
 ## 1 · ETL Pipeline with Fuzzy Matching
 
-**Notebook:** [`ETL Pipeline_Fuzzymatching.ipynb`](etl-fuzzy-matching-pipeline/ETL%20Pipeline_Fuzzymatching.ipynb)  
-**Folder:** [`etl-fuzzy-matching-pipeline/`](etl-fuzzy-matching-pipeline/)
+**Notebook:** [`ETL_Pipeline_Fuzzymatching.ipynb`](ETL_Pipeline_Fuzzymatching/ETL_Pipeline_Fuzzymatching.ipynb)  
+**Folder:** [`ETL_Pipeline_Fuzzymatching/`](ETL_Pipeline_Fuzzymatching/)
 
-A modular Python ETL pipeline that ingests data from multiple sources, standardizes and cleans records, and applies fuzzy string matching (RapidFuzz) to deduplicate entries with no exact matching key. Configurable similarity thresholds, blocking strategies, and full audit logging make it production-ready and reusable across domains.
+A modular Python ETL pipeline that ingests data from multiple sources, standardizes and cleans records, and applies fuzzy string matching (RapidFuzz) to deduplicate entries with no exact matching key. Configurable similarity thresholds, a blocking strategy to manage scale, and full audit logging make it reusable across data domains.
 
 **Highlights**
 - `token_sort_ratio` + `partial_ratio` scoring handles name transpositions and abbreviations
 - Blocking strategy reduces O(n²) comparison complexity on large datasets
 - Borderline matches flagged to an audit log for human review before final load
-- Pipeline config driven by `config.yaml` — no code changes needed to switch data domains
+- Config-driven pipeline — no code changes needed to switch data domains
 
-**Impact:** Reduced duplicate records by ~80% · Eliminated hours of manual weekly reconciliation
+**Impact:** ~80% reduction in duplicate records · Eliminated hours of manual weekly reconciliation
 
-🔗 [View full README](etl-fuzzy-matching-pipeline/README.md)
+🔗 [View full README](ETL_Pipeline_Fuzzymatching/README.md)
 
 ---
 
 ## 2 · Power BI Sales Performance Dashboard
 
-**File:** `10-Solution-Sales Analysis.pbix` *(not shareable — embedded SQL Server credentials)*  
-**Folder:** [`powerbi-operational-dashboards/`](powerbi-operational-dashboards/)
+**File:** [`10-Solution-Sales Analysis.pbix`](PowerBI/10-Solution-Sales%20Analysis.pbix) *(SQL Server credentials embedded — view screenshots in folder)*  
+**Folder:** [`PowerBI/`](PowerBI/)
 
-An interactive Power BI dashboard connected live to SQL Server, replacing manual Excel reporting with real-time salesperson performance tracking. Built on a star schema data model with DAX measures for Sales vs. Target analysis, time intelligence, and period-over-period comparison. Secured with Row-Level Security by department.
+An interactive Power BI dashboard connected live to SQL Server, replacing manual Excel reporting with real-time salesperson performance tracking. Built on a star schema data model with DAX measures for Sales vs. Target analysis, time intelligence, and period-over-period comparisons. Secured with Row-Level Security by department and role.
 
 **Highlights**
 - `Target` measure uses `HASONEVALUE` to prevent incorrect aggregation across filter contexts
@@ -73,20 +95,20 @@ IF(
 
 **Impact:** 5+ weekly Excel reports replaced · Time-to-insight reduced from 5–7 days to real-time
 
-🔗 [View full README](powerbi-operational-dashboards/README.md)
+🔗 [View full README](PowerBI/README.md)
 
 ---
 
 ## 3 · Heart Disease Prediction — Random Forest
 
-**Notebook:** [`Heart_Disease.ipynb`](heart-disease-ml-random-forest/Heart_Disease.ipynb)  
-**Folder:** [`heart-disease-ml-random-forest/`](heart-disease-ml-random-forest/)  
+**Notebook:** [`Heart_Disease.ipynb`](Heart_Disease_Predictor/Heart_Disease.ipynb)  
+**Folder:** [`Heart_Disease_Predictor/`](Heart_Disease_Predictor/)  
 **Competition:** [Kaggle Playground Series — Season 6, Episode 2](https://www.kaggle.com/competitions/playground-series-s6e2)
 
-A supervised classification project that predicts heart disease presence or absence from 13 clinical features. Five Random Forest configurations are evaluated against a validation split, with the best model retrained on the full dataset to generate competition predictions.
+A supervised classification project predicting heart disease presence or absence from 13 clinical features. Five Random Forest configurations are evaluated against a validation split, with the winning model retrained on the full dataset to generate competition predictions.
 
 **Highlights**
-- `LabelEncoder` used to encode target: `Absence → 0`, `Presence → 1`
+- `LabelEncoder` encodes target: `Absence → 0`, `Presence → 1`
 - 80/20 train/validation split with `random_state=0` for reproducibility
 - 5 models compared — winner: `n_estimators=200, min_samples_split=20`
 - `min_samples_split=20` prevents overfitting by requiring meaningful sample depth before node splits
@@ -94,45 +116,45 @@ A supervised classification project that predicts heart disease presence or abse
 
 **Models Evaluated**
 
-| Model | Configuration |
-|-------|--------------|
-| Model 1 | `n_estimators=50` |
-| Model 2 | `n_estimators=100` |
-| Model 3 | `n_estimators=100, criterion='log_loss'` |
-| **Model 4** ✅ | **`n_estimators=200, min_samples_split=20`** |
-| Model 5 | `n_estimators=100, max_depth=7` |
+| Model | Configuration | Result |
+|-------|--------------|--------|
+| Model 1 | `n_estimators=50` | Baseline |
+| Model 2 | `n_estimators=100` | — |
+| Model 3 | `n_estimators=100, criterion='log_loss'` | — |
+| **Model 4** | **`n_estimators=200, min_samples_split=20`** | ✅ Best accuracy |
+| Model 5 | `n_estimators=100, max_depth=7` | — |
 
-> ⚠️ *Academic/portfolio project — not intended for clinical use.*
+> ⚠️ *Academic and competition project only — not intended for clinical use.*
 
-🔗 [View full README](heart-disease-ml-random-forest/README.md)
+🔗 [View full README](Heart_Disease_Predictor/README.md)
 
 ---
 
 ## 4 · Commission Reporting Automation
 
-**Notebook:** [`Comissions_report.ipynb`](commission-reporting-automation/Comissions_report.ipynb)  
-**Folder:** [`commission-reporting-automation/`](commission-reporting-automation/)
+**Notebook:** [`Comissions_Report.ipynb`](Commissions_Report/Comissions_Report.ipynb)  
+**Folder:** [`Commissions_Report/`](Commissions_Report/)
 
-A Python automation script that ingests three Salesforce CSV exports (Payment, Subscription, Commission), reconciles and cleans the data, calculates referral partner commissions at a 30% rate, handles CAD → USD currency conversion, and outputs a formatted Excel report — all in a single run.
+A Python script that ingests three Salesforce CSV exports (Payment, Subscription, Commission), reconciles and cleans the data, calculates referral partner commissions at a flat 30% rate, handles CAD → USD currency conversion, and outputs a formatted, audit-ready Excel report — all in a single run.
 
 **Highlights**
 - Regex parser resolves a Salesforce export bug where `Product Name` is wrapped in raw HTML anchor tags
 - Filters to commissionable products: `PlanSwift Professional` and `PlanSwift Plugins`
 - CAD → USD conversion applied automatically via configurable exchange rate
-- `xlsxwriter` generates a styled, audit-ready Excel report with two tables: full detail + Referral Partner summary
-- Column rename dictionary (`col_name_change`) makes schema updates easy to maintain
+- `xlsxwriter` generates a styled Excel report with two tables: full detail + Referral Partner summary
+- Column rename dictionary (`col_name_change`) keeps schema updates clean and maintainable
 
 **Impact:** Processing time reduced from ~8 hours to under 30 minutes per cycle · Calculation errors eliminated
 
-🔗 [View full README](commission-reporting-automation/README.md)
+🔗 [View full README](Commissions_Report/README.md)
 
 ---
 
 ## 5 · SQL Data Validation Framework
 
-**Folder:** [`sql-data-validation-framework/`](sql-data-validation-framework/)
+**Folder:** [`SQL/`](SQL/)
 
-A metadata-driven suite of reusable SQL validation checks that run automatically after every pipeline load. Covers five dimensions of data quality — Completeness, Uniqueness, Validity, Consistency, and Timeliness — with results logged to a `validation_results` table and failures routed to alerts via a Python orchestrator.
+A metadata-driven suite of reusable SQL validation checks that run automatically after every pipeline load. Covers five dimensions of data quality — Completeness, Uniqueness, Validity, Consistency, and Timeliness — with all results logged to a `validation_results` table and failures routed to alerts via a Python orchestrator.
 
 **Highlights**
 - Validation rules stored in a metadata table — no hardcoded logic, no script edits to add a new check
@@ -142,7 +164,7 @@ A metadata-driven suite of reusable SQL validation checks that run automatically
 
 **Impact:** ~70% reduction in data incidents reaching production · Eliminated "I don't trust this number" from stakeholder conversations
 
-🔗 [View full README](sql-data-validation-framework/README.md)
+🔗 [View full README](SQL/README.md)
 
 ---
 
